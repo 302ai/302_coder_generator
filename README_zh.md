@@ -1,8 +1,8 @@
-# 💻🤖 欢迎来到302.AI的AI代码生成器2.0! 🚀✨
+# 💻🤖 欢迎来到302.AI的AI网页生成器2.0! 🚀✨
 
 [中文](README_zh.md) | [English](README.md) | [日本語](README_ja.md)
 
-来自[302.AI](https://302.ai)的[AI代码生成器2.0](https://302.ai/tools/coder/)的开源版本。
+来自[302.AI](https://302.ai)的[AI网页生成器2.0](https://302.ai/tools/coder/)的开源版本。
 你可以直接登录302.AI，零代码零配置使用在线版本。
 或者对本项目根据自己的需求进行修改，传入302.AI的API KEY，自行部署。
 
