@@ -1,0 +1,23 @@
+{
+  "code_viewer": {
+    "reference": "引用"
+  },
+  "header": {
+    "auto_scroll": "自動スクロール",
+    "optimize_prompt": "プロンプトの最適化",
+    "prompt_cannot_be_empty": "ヒントの言葉は空白にできません",
+    "show_file_explorer": "すべてのファイルを表示します",
+    "show_preview": "プレビューを表示する",
+    "title": "AIウェブページジェネレータ2.0",
+    "upload_failed": "ファイルのアップロードに失敗しました",
+    "upload_success": "ファイルのアップロードに成功しました",
+    "url_input_placeholder": "Appleスタイルの計算機を作成する"
+  },
+  "main": {
+    "code_view_creating": "あなたのアプリを作成中です...",
+    "code_view_empty": "プレビューはまだありません、まずはあなたのニーズから始めてください！",
+    "code_view_updating": "あなたのAPPを再構築中です...",
+    "prompt_input_placeholder": "あなたの修正案を入力してください。"
+  },
+  "prompt_for_update_empty_error": "ヒントの単語は空にできません"
+}

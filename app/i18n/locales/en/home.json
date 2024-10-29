@@ -1,0 +1,23 @@
+{
+  "code_viewer": {
+    "reference": "Quote"
+  },
+  "header": {
+    "auto_scroll": "Automatic Scrolling",
+    "optimize_prompt": "Optimize Prompt",
+    "prompt_cannot_be_empty": "The prompt cannot be empty.",
+    "show_file_explorer": "Display all files",
+    "show_preview": "Display Preview",
+    "title": "AI Web Page Generator 2.0",
+    "upload_failed": "File upload failed.",
+    "upload_success": "File upload successful",
+    "url_input_placeholder": "Create a calculator using the Apple style."
+  },
+  "main": {
+    "code_view_creating": "Building your APP...",
+    "code_view_empty": "No preview available, please start with your requirements first!",
+    "code_view_updating": "Rebuilding your APP...",
+    "prompt_input_placeholder": "Enter your modification ideas."
+  },
+  "prompt_for_update_empty_error": "The prompt word cannot be empty."
+}

@@ -1,0 +1,23 @@
+{
+  "code_viewer": {
+    "reference": "引用"
+  },
+  "header": {
+    "auto_scroll": "自动滚动",
+    "optimize_prompt": "优化Prompt",
+    "prompt_cannot_be_empty": "提示词不能为空",
+    "show_file_explorer": "显示所有文件",
+    "show_preview": "显示预览",
+    "title": "AI网页生成器2.0",
+    "upload_failed": "文件上传失败",
+    "upload_success": "文件上传成功",
+    "url_input_placeholder": "做一个计算器，使用Apple风格"
+  },
+  "main": {
+    "code_view_creating": "正在构建您的APP...",
+    "code_view_empty": "暂无预览，请先从您的需求开始吧！",
+    "code_view_updating": "正在重新构建您的APP...",
+    "prompt_input_placeholder": "输入你的修改想法"
+  },
+  "prompt_for_update_empty_error": "提示词不能为空"
+}

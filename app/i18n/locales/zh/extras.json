@@ -1,0 +1,32 @@
+{
+  "about": {
+    "title": "关于",
+    "trigger": {
+      "label": "打开/关闭工具信息弹窗"
+    }
+  },
+  "error_page": {
+    "reload": "重新加载",
+    "title": "出现意料之外的故障"
+  },
+  "footer": {
+    "copyright_content": "由<LogoLink></LogoLink>驱动",
+    "copyright_leading": "内容由AI生成，仅供参考"
+  },
+  "share": {
+    "error": "创建失败，请稍后重试",
+    "no_code_error": "暂无代码，无法分享",
+    "success": "分享成功，已复制分享链接",
+    "successIframe": "分享成功，请手动复制",
+    "trigger": {
+      "label": "打开/关闭分享链接"
+    }
+  },
+  "switch_language": "切换语言",
+  "switch_theme": {
+    "dark": "夜间",
+    "light": "白天",
+    "system": "跟随系统",
+    "toggle_theme": "切换主题"
+  }
+}

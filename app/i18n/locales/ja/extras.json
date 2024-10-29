@@ -1,0 +1,32 @@
+{
+  "about": {
+    "title": "について",
+    "trigger": {
+      "label": "ツール情報のポップアップを開く/閉じる"
+    }
+  },
+  "error_page": {
+    "reload": "再読み込み",
+    "title": "予想外の故障が発生しました"
+  },
+  "footer": {
+    "copyright_content": "<LogoLink></LogoLink>によって駆動されます",
+    "copyright_leading": "コンテンツはAIによって生成され、参考のためだけです。"
+  },
+  "share": {
+    "error": "作成に失敗しました、しばらくしてから再試行してください",
+    "no_code_error": "コードがないため、共有できません",
+    "success": "共有成功、共有リンクをコピーしました",
+    "successIframe": "共有に成功しました。手動でコピーしてください。",
+    "trigger": {
+      "label": "共有リンクを開く/閉じる"
+    }
+  },
+  "switch_language": "言語を切り替える",
+  "switch_theme": {
+    "dark": "夜間",
+    "light": "昼間",
+    "system": "システムに従う",
+    "toggle_theme": "テーマの切り替え"
+  }
+}
