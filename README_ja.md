@@ -37,7 +37,7 @@ AIコードジェネレーター2.0を使用すると、誰でもコードクリ
 - Vecel AI SDK
 
 ## 開発とデプロイ
-1. プロジェクトをクローンする `git clone https://github.com/302ai/302_web_page_generator`
+1. プロジェクトをクローンする `git clone https://github.com/302ai/302_coder_generator`
 2. 依存関係をインストールする `pnpm install`
 3. 302のAPI KEYを設定する `.env.exampleを参照`
 4. プロジェクトを実行する `pnpm dev`

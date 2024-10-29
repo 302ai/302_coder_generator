@@ -38,7 +38,7 @@ With AI Code Generator 2.0, anyone can become a code creator! 🎉💻 Let's exp
 - Vecel AI SDK
 
 ## Development & Deployment
-1. Clone the project `git clone https://github.com/302ai/302_web_page_generator`
+1. Clone the project `git clone https://github.com/302ai/302_coder_generator`
 2. Install dependencies `pnpm install`
 3. Configure 302's API KEY as per .env.example
 4. Run the project `pnpm dev`

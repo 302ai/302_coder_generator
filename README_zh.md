@@ -38,7 +38,7 @@
 - Vecel AI SDK
 
 ## 开发&部署
-1. 克隆项目 `git clone https://github.com/302ai/302_web_page_generator`
+1. 克隆项目 `git clone https://github.com/302ai/302_coder_generator`
 2. 安装依赖 `pnpm install`
 3. 配置302的API KEY 参考.env.example
 4. 运行项目 `pnpm dev`
