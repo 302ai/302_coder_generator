@@ -12,6 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { showBrand } from '@/lib/brand'
 import { cn } from '@/lib/utils'
 import {
   ImageIcon,
@@ -116,7 +117,7 @@ const Header = forwardRef<HTMLDivElement, Props>(
         ref={ref}
       >
         <div className='flex items-center space-x-4'>
-          <LogoIcon className='size-8 flex-shrink-0' />
+          {showBrand && <LogoIcon className='size-8 flex-shrink-0' />}
           <h1 className='break-all text-3xl leading-tight tracking-tighter transition-all sm:text-4xl lg:leading-[1.1]'>
             {t('home:header.title')}
           </h1>

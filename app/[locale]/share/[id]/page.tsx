@@ -3,6 +3,7 @@ import { Footer } from '@/app/components/footer'
 import Main from '@/app/components/main'
 import { useTranslation } from '@/app/i18n/client'
 import { CodeInfoShare, useCodeStore } from '@/app/stores/use-code-store'
+import { showBrand } from '@/lib/brand'
 import { cn } from '@/lib/utils'
 import ky from 'ky'
 import { useParams } from 'next/navigation'
@@ -45,11 +46,9 @@ export default function Share({
       if (!footerRef.current) return
 
       const footerRect = footerRef.current.getBoundingClientRect()
-      const footerMargin = parseFloat(
-        window.getComputedStyle(footerRef.current).marginBottom
-      ) + parseFloat(
-        window.getComputedStyle(footerRef.current).marginTop
-      )
+      const footerMargin =
+        parseFloat(window.getComputedStyle(footerRef.current).marginBottom) +
+        parseFloat(window.getComputedStyle(footerRef.current).marginTop)
       const mainHeight = window.innerHeight - footerRect.height - footerMargin
 
       mainRef.current?.style.setProperty('height', `${mainHeight}px`)
@@ -84,7 +83,8 @@ export default function Share({
       <main className={cn('mx-auto w-full')} ref={mainRef}>
         <Main height={mainHeight} onSubmit={onSubmit} />
       </main>
-      <Footer className={cn('my-4')} ref={footerRef} />
+      {!showBrand && <footer ref={footerRef} />}
+      {showBrand && <Footer className='mb-4' ref={footerRef} />}
     </div>
   )
 }

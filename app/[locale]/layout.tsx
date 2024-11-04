@@ -5,6 +5,7 @@ import '../globals.css'
 import ClientOnly from '@/app/components/client-only'
 import { ErrorHandler } from '@/app/components/error-handler'
 import { languages } from '@/app/i18n/settings'
+import { showBrand } from '@/lib/brand'
 import { dir } from 'i18next'
 import { Metadata, ResolvingMetadata } from 'next'
 import { headers } from 'next/headers'
@@ -114,10 +115,12 @@ export default function RootLayout({
             <ErrorHandler />
             <Toolbar />
             {children}
-            <script
-              src='https://assets.salesmartly.com/js/project_177_61_1649762323.js'
-              async
-            />
+            {showBrand && (
+              <script
+                src='https://assets.salesmartly.com/js/project_177_61_1649762323.js'
+                async
+              />
+            )}
           </Providers>
         </ClientOnly>
       </body>

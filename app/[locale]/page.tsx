@@ -2,6 +2,7 @@
 import { Footer } from '@/app/components/footer'
 import { useTranslation } from '@/app/i18n/client'
 import { Button } from '@/components/ui/button'
+import { showBrand } from '@/lib/brand'
 import { logger } from '@/lib/logger'
 import { emitter } from '@/lib/mitt'
 import { useThrottleFn } from 'ahooks'
@@ -379,7 +380,8 @@ export default function Home({
             isPromptForUpdateOptimizing={isPromptForUpdateOptimizing}
           />
         </main>
-        <Footer className='mb-4' ref={footerRef} />
+        {!showBrand && <footer ref={footerRef} />}
+        {showBrand && <Footer className='mb-4' ref={footerRef} />}
       </div>
     </>
   )
