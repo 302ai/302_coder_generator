@@ -7,8 +7,59 @@ import { createStreamableValue } from 'ai/rsc'
 import dedent from 'dedent'
 import { env } from 'next-runtime-env'
 import { isArray } from 'radash'
+import { ImageStyle } from '../stores/use-code-store'
 
 const MAX_TOKENS = 8192
+
+const getImageStyle = (message: CoreMessage) => {
+  let imageStyle = ImageStyle.Style
+  if (message.experimental_providerMetadata) {
+    Object.entries(message.experimental_providerMetadata).forEach(
+      ([key, value]) => {
+        if (key === 'metadata' && value.imageStyle) {
+          imageStyle = value.imageStyle as ImageStyle
+        }
+      }
+    )
+  }
+  return imageStyle
+}
+
+const covertUserMessage = (content: string, imageStyle: ImageStyle) => {
+  return dedent`
+  ${content}
+
+  ${
+    imageStyle === ImageStyle.Style &&
+    dedent`
+    You are required to build a single page app with a similar design style as the reference image, while the content should be based on the user's text description.
+    Pay close attention to background color, text color, font size, font family, padding, margin, border, etc. Match the style elements exactly as in the reference image.
+    Make sure the app's style looks exactly like the screenshot in terms of design elements such as background color, text color, font size, font family, padding, margin, and border.
+    Modify the corresponding text content in the screenshot according to the user's requirements, ensuring that the text content is relevant to the requirements while maintaining the overall style.
+    `
+  }
+  ${
+    imageStyle === ImageStyle.Content &&
+    dedent`
+     You need to focus on the functional content requirements in the image when generating the web page.
+     Use the information in the image as a reference for the page content, and design the interface style according to the user's description.
+     If the user does not provide a specific style description, you can use your own judgment to design.
+     Analyze the functional content in the screenshot carefully.
+     Implement the relevant functionality and content layout in the generated web page according to the image's indication, while considering the user's text description for any additional or specific requirements.    `
+  }
+  ${
+    imageStyle === ImageStyle.Both &&
+    dedent`
+    You need to comprehensively consider both the design style and the content requirements of the reference image. Build a single page app that combines the style elements and content information from the image with the user's text description.
+    Make sure the app's style looks exactly like the screenshot in terms of design elements such as background color, text color, font size, font family, padding, margin, and border.
+    Modify the corresponding text content in the screenshot according to the user's requirements, ensuring that the text content is relevant to the requirements while maintaining the overall style.
+    Analyze the functional content in the screenshot carefully.
+    Implement the relevant functionality and content layout in the generated web page according to the image's indication, while considering the user's text description for any additional or specific requirements.    `
+  }
+
+  Please ONLY return code, NO backticks or language names.
+  `
+}
 
 export async function chat({
   model,
@@ -35,15 +86,14 @@ export async function chat({
     let newMessages = messages.map((message) => {
       if (message.role === 'user') {
         if (isArray(message.content)) {
+          const imageStyle = getImageStyle(message)
           return {
             ...message,
             content: message.content.map((content) => {
               if (content.type === 'text') {
                 return {
                   type: 'text' as const,
-                  text:
-                    content.text +
-                    '\nPlease ONLY return code, NO backticks or language names.',
+                  text: covertUserMessage(content.text, imageStyle),
                 }
               }
               return content

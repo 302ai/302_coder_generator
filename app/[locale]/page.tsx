@@ -117,6 +117,7 @@ export default function Home({
         status: 'creating',
       })
       const hasImage = useCodeStore.getState().image !== ''
+      const imageStyle = useCodeStore.getState().imageStyle
       const messages = [
         {
           role: 'user' as const,
@@ -134,6 +135,9 @@ export default function Home({
                 ]
               : []),
           ],
+          ...(hasImage
+            ? { experimental_providerMetadata: { metadata: { imageStyle } } }
+            : {}),
         },
       ]
       try {
@@ -165,6 +169,8 @@ export default function Home({
       const hasImage =
         useCodeStore.getState().imageForUpdate !== '' ||
         useCodeStore.getState().image !== ''
+
+      const hasUpdateImaeg = useCodeStore.getState().imageForUpdate !== ''
       const codeMessage = {
         role: 'assistant' as const,
         content: useCodeStore.getState().generateCode ?? '',
@@ -180,6 +186,8 @@ export default function Home({
         Please update the code to match the reference code.
         `
         : prompt
+
+      const imageStyle = useCodeStore.getState().imageStyleForUpdate
       const modificationMessage = {
         role: 'user' as const,
         content: [
@@ -187,7 +195,7 @@ export default function Home({
             type: 'text' as const,
             text: prompt,
           },
-          ...(useCodeStore.getState().imageForUpdate !== ''
+          ...(hasUpdateImaeg
             ? [
                 {
                   type: 'image' as const,
@@ -196,6 +204,9 @@ export default function Home({
               ]
             : []),
         ],
+        ...(hasUpdateImaeg
+          ? { experimental_providerMetadata: { metadata: { imageStyle } } }
+          : {}),
       }
 
       updateCodeInfo({
@@ -231,7 +242,13 @@ export default function Home({
         }
       }
     },
-    [updateCodeInfo, messages, appendMessage, throttledUpdateCode, referenceText]
+    [
+      updateCodeInfo,
+      messages,
+      appendMessage,
+      throttledUpdateCode,
+      referenceText,
+    ]
   )
 
   const [isPromptOptimizing, setIsPromptOptimizing] = useState(false)
@@ -291,7 +308,10 @@ export default function Home({
 
   const { upload, isLoading: isUploading, error } = useFileUpload()
 
-  const handleUpload = async (isUpdate: boolean = false) => {
+  const handleUpload = async (
+    isUpdate: boolean = false,
+    callback?: () => void
+  ) => {
     const fileInput = document.createElement('input')
     fileInput.type = 'file'
     fileInput.accept = 'image/*'
@@ -317,6 +337,7 @@ export default function Home({
           updateCodeInfo({ image: url })
         }
         toast.success(t('home:header.upload_success'))
+        callback?.()
       }
     }
     fileInput.click()

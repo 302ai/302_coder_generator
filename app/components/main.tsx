@@ -1,5 +1,13 @@
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Tooltip,
   TooltipContent,
@@ -13,7 +21,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useClientTranslation } from '../hooks/use-client-translation'
 import { useIsSharePath } from '../hooks/use-is-share-path'
 import { useIsSupportVision } from '../hooks/use-is-support-vision'
-import { useCodeStore } from '../stores/use-code-store'
+import { ImageStyle, useCodeStore } from '../stores/use-code-store'
 import CodeViewer from './code-viewer'
 import RightArrowIcon from './icons/right-arrow'
 import { Share } from './toolbar/share'
@@ -28,7 +36,7 @@ export default function Main({
 }: {
   height: number
   onSubmit: (prompt: string) => void
-  handleUpload?: (isUpdate?: boolean) => void
+  handleUpload?: (isUpdate?: boolean, callback?: () => void) => void
   isUploading?: boolean
   handleOptimizePrompt?: (prompt: string, isUpdate?: boolean) => void
   isPromptOptimizing?: boolean
@@ -84,6 +92,15 @@ export default function Main({
   const handleSubmit = () => {
     onSubmit(promptForUpdate)
   }
+
+  const [uploadImageDialogOpen, setUploadImageDialogOpen] = useState(false)
+
+  const { imageStyleForUpdate, setImageStyleForUpdate } = useCodeStore(
+    (state) => ({
+      imageStyleForUpdate: state.imageStyleForUpdate,
+      setImageStyleForUpdate: state.setImageStyleForUpdate,
+    })
+  )
 
   return (
     <div
@@ -170,18 +187,84 @@ export default function Main({
           )}
           {/* image upload button */}
           {isSupportVision && (
-            <Button
-              className='size-12 shrink-0 overflow-hidden rounded-lg p-0'
-              variant='outline'
-              disabled={isLoading || isUploading}
-              onClick={() => handleUpload?.(true)}
-            >
-              {isUploading ? (
-                <Loader2Icon className='size-4 animate-spin' />
-              ) : (
-                <ImageIcon className='size-4' />
-              )}
-            </Button>
+            <>
+              <Button
+                className='size-12 shrink-0 overflow-hidden rounded-lg p-0'
+                variant='outline'
+                disabled={isLoading || isUploading}
+                onClick={() => setUploadImageDialogOpen(true)}
+              >
+                {isUploading ? (
+                  <Loader2Icon className='size-4 animate-spin' />
+                ) : (
+                  <ImageIcon className='size-4' />
+                )}
+              </Button>
+
+              <Dialog
+                open={uploadImageDialogOpen}
+                onOpenChange={setUploadImageDialogOpen}
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>
+                      {t('home:header.upload_image_reference')}：
+                    </DialogTitle>
+                  </DialogHeader>
+
+                  <RadioGroup
+                    defaultValue='style'
+                    className='mt-4 space-y-2'
+                    value={imageStyleForUpdate}
+                    onValueChange={(value) =>
+                      setImageStyleForUpdate(value as ImageStyle)
+                    }
+                  >
+                    <div className='flex flex-col space-y-2'>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='style' id='r1' />
+                        <Label htmlFor='r1'>
+                          {t('home:header.image_style')}
+                        </Label>
+                      </div>
+                      <p className='px-4 py-2 text-sm text-muted-foreground'>
+                        {t('home:header.image_style_description')}
+                      </p>
+                    </div>
+                    <div>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='content' id='r2' />
+                        <Label htmlFor='r2'>
+                          {t('home:header.image_content')}
+                        </Label>
+                      </div>
+                      <p className='px-4 py-2 text-sm text-muted-foreground'>
+                        {t('home:header.image_content_description')}
+                      </p>
+                    </div>
+                    <div className='flex flex-col space-y-2'>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='both' id='r3' />
+                        <Label htmlFor='r3'>{t('home:header.both')}</Label>
+                      </div>
+                      <p className='px-4 py-2 text-sm text-muted-foreground'>
+                        {t('home:header.both_description')}
+                      </p>
+                    </div>
+                  </RadioGroup>
+
+                  <Button
+                    onClick={() => {
+                      handleUpload?.(true, () => {
+                        setUploadImageDialogOpen(false)
+                      })
+                    }}
+                  >
+                    {t('home:header.select_image')}
+                  </Button>
+                </DialogContent>
+              </Dialog>
+            </>
           )}
           <Button
             className='size-12 shrink-0 overflow-hidden rounded-lg p-0'

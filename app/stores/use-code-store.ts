@@ -4,6 +4,12 @@ import { create } from 'zustand'
 import { CoreMessage } from 'ai'
 import { storeMiddleware } from './middleware'
 
+export enum ImageStyle {
+  Style = 'style',
+  Content = 'content',
+  Both = 'both',
+}
+
 interface CodeStore {
   _hasHydrated: boolean
   prompt: string
@@ -21,6 +27,8 @@ interface CodeStore {
   selectedText: string
   isSelecting: boolean
   referenceText: string
+  imageStyle: ImageStyle
+  imageStyleForUpdate: ImageStyle
 }
 
 export interface CodeInfoShare {
@@ -42,6 +50,8 @@ interface CodeActions {
   setSelectedText: (text: string) => void
   setIsSelecting: (value: boolean) => void
   setReferenceText: (text: string) => void
+  setImageStyle: (value: ImageStyle) => void
+  setImageStyleForUpdate: (value: ImageStyle) => void
 }
 
 export const useCodeStore = create<CodeStore & CodeActions>()(
@@ -63,6 +73,8 @@ export const useCodeStore = create<CodeStore & CodeActions>()(
       selectedText: '',
       isSelecting: false,
       referenceText: '',
+      imageStyle: ImageStyle.Style,
+      imageStyleForUpdate: ImageStyle.Style,
       appendGenerateCode: (code: string) =>
         set(
           produce((state) => {
@@ -129,6 +141,18 @@ export const useCodeStore = create<CodeStore & CodeActions>()(
         set(
           produce((state) => {
             state.referenceText = text
+          })
+        ),
+      setImageStyle: (value) =>
+        set(
+          produce((state) => {
+            state.imageStyle = value
+          })
+        ),
+      setImageStyleForUpdate: (value) =>
+        set(
+          produce((state) => {
+            state.imageStyleForUpdate = value
           })
         ),
     }),

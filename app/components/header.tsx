@@ -1,4 +1,10 @@
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -6,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Switch } from '@/components/ui/switch'
 import {
   Tooltip,
@@ -23,17 +30,17 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import { isEmpty } from 'radash'
-import { forwardRef, memo, useCallback, useMemo } from 'react'
+import { forwardRef, memo, useCallback, useMemo, useState } from 'react'
 import { useClientTranslation } from '../hooks/use-client-translation'
 import { useIsSupportVision } from '../hooks/use-is-support-vision'
-import { useCodeStore } from '../stores/use-code-store'
+import { ImageStyle, useCodeStore } from '../stores/use-code-store'
 import LogoIcon from './icons/logo-icon'
 import RightArrowIcon from './icons/right-arrow'
 
 interface Props {
   className?: string
   onSubmit?: (prompt: string) => void
-  handleUpload?: (isUpdate?: boolean) => void
+  handleUpload?: (isUpdate?: boolean, callback?: () => void) => void
   isUploading?: boolean
   handleOptimizePrompt?: (prompt: string, isUpdate?: boolean) => void
   isPromptOptimizing?: boolean
@@ -41,7 +48,18 @@ interface Props {
 }
 
 const Header = forwardRef<HTMLDivElement, Props>(
-  ({ className, onSubmit, handleUpload, isUploading, handleOptimizePrompt, isPromptOptimizing, isPromptForUpdateOptimizing }, ref) => {
+  (
+    {
+      className,
+      onSubmit,
+      handleUpload,
+      isUploading,
+      handleOptimizePrompt,
+      isPromptOptimizing,
+      isPromptForUpdateOptimizing,
+    },
+    ref
+  ) => {
     const { t } = useClientTranslation()
 
     const isSupportVision = useIsSupportVision()
@@ -108,6 +126,12 @@ const Header = forwardRef<HTMLDivElement, Props>(
       [status]
     )
 
+    const [uploadImageDialogOpen, setUploadImageDialogOpen] = useState(false)
+
+    const { imageStyle, setImageStyle } = useCodeStore((state) => ({
+      imageStyle: state.imageStyle,
+      setImageStyle: state.setImageStyle,
+    }))
     return (
       <header
         className={cn(
@@ -250,18 +274,85 @@ const Header = forwardRef<HTMLDivElement, Props>(
             )}
             {/* image upload button */}
             {isSupportVision && (
-              <Button
-                className='size-12 shrink-0 overflow-hidden rounded-lg p-0'
-                variant='outline'
-                disabled={isLoading || isUploading}
-                onClick={() => handleUpload?.(false)}
-              >
-                {isUploading ? (
-                  <Loader2Icon className='size-4 animate-spin' />
-                ) : (
-                  <ImageIcon className='size-4' />
-                )}
-              </Button>
+              <>
+                <Button
+                  className='size-12 shrink-0 overflow-hidden rounded-lg p-0'
+                  variant='outline'
+                  disabled={isLoading || isUploading}
+                  onClick={() => setUploadImageDialogOpen(true)}
+                >
+                  {isUploading ? (
+                    <Loader2Icon className='size-4 animate-spin' />
+                  ) : (
+                    <ImageIcon className='size-4' />
+                  )}
+                </Button>
+                <Dialog
+                  open={uploadImageDialogOpen}
+                  onOpenChange={setUploadImageDialogOpen}
+                >
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>
+                        {t('home:header.upload_image_reference')}：
+                      </DialogTitle>
+                    </DialogHeader>
+
+                    <RadioGroup
+                      defaultValue='style'
+                      className='mt-4 space-y-2'
+                      value={imageStyle}
+                      onValueChange={(value) =>
+                        setImageStyle(value as ImageStyle)
+                      }
+                    >
+                      <div className='flex flex-col space-y-2'>
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem value='style' id='r1' />
+                          <Label htmlFor='r1'>
+                            {t('home:header.image_style')}
+                          </Label>
+                        </div>
+                        <p className='px-4 py-2 text-sm text-muted-foreground'>
+                          {t('home:header.image_style_description')}
+                        </p>
+                      </div>
+                      <div>
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem value='content' id='r2' />
+                          <Label htmlFor='r2'>
+                            {t('home:header.image_content')}
+                          </Label>
+                        </div>
+                        <p className='px-4 py-2 text-sm text-muted-foreground'>
+                          {t('home:header.image_content_description')}
+                        </p>
+                      </div>
+                      <div className='flex flex-col space-y-2'>
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem value='both' id='r3' />
+                          <Label htmlFor='r3'>
+                            {t('home:header.both')}
+                          </Label>
+                        </div>
+                        <p className='px-4 py-2 text-sm text-muted-foreground'>
+                          {t('home:header.both_description')}
+                        </p>
+                      </div>
+                    </RadioGroup>
+
+                    <Button
+                      onClick={() => {
+                        handleUpload?.(false, () => {
+                          setUploadImageDialogOpen(false)
+                        })
+                      }}
+                    >
+                      {t('home:header.select_image')}
+                    </Button>
+                  </DialogContent>
+                </Dialog>
+              </>
             )}
             <Button
               className='size-12 shrink-0 overflow-hidden rounded-lg p-0'
