@@ -81,33 +81,29 @@ export async function chat({
       baseURL: env('NEXT_PUBLIC_API_URL') + '/v1',
     })
 
-    let systemPrompt = getSystemPrompt(shadcn, image)
+    const systemPrompt = getSystemPrompt(shadcn, image)
 
-    let newMessages = messages.map((message) => {
-      if (message.role === 'user') {
-        if (isArray(message.content)) {
-          const imageStyle = getImageStyle(message)
-          return {
-            ...message,
-            content: message.content.map((content) => {
-              if (content.type === 'text') {
-                return {
-                  type: 'text' as const,
-                  text: covertUserMessage(content.text, imageStyle),
-                }
+    const newMessages = messages.map((message) => {
+      if (message.role === 'user' && isArray(message.content)) {
+        const imageStyle = getImageStyle(message)
+        return {
+          ...message,
+          content: message.content.map((content) => {
+            if (content.type === 'text') {
+              return {
+                type: 'text' as const,
+                text: covertUserMessage(content.text, imageStyle),
               }
-              return content
-            }),
-          }
-        } else {
-          return message
+            }
+            return content
+          }),
         }
       }
       return message
     })
 
     if (model.includes('o1-mini') || model.includes('o1-preview')) {
-      newMessages = [{ role: 'user', content: systemPrompt }, ...newMessages]
+      newMessages.unshift({ role: 'user', content: systemPrompt })
     }
 
     ;(async () => {
