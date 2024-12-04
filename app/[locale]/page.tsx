@@ -170,7 +170,7 @@ export default function Home({
         useCodeStore.getState().imageForUpdate !== '' ||
         useCodeStore.getState().image !== ''
 
-      const hasUpdateImaeg = useCodeStore.getState().imageForUpdate !== ''
+      const hasUpdateImage = useCodeStore.getState().imageForUpdate !== ''
       const codeMessage = {
         role: 'assistant' as const,
         content: useCodeStore.getState().generateCode ?? '',
@@ -195,7 +195,7 @@ export default function Home({
             type: 'text' as const,
             text: prompt,
           },
-          ...(hasUpdateImaeg
+          ...(hasUpdateImage
             ? [
                 {
                   type: 'image' as const,
@@ -204,7 +204,7 @@ export default function Home({
               ]
             : []),
         ],
-        ...(hasUpdateImaeg
+        ...(hasUpdateImage
           ? { experimental_providerMetadata: { metadata: { imageStyle } } }
           : {}),
       }
