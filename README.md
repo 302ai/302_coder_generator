@@ -8,7 +8,7 @@
 
 ![Interface Preview](docs/AI网页生成器en.png)
 
-Open-source version of the [AI Web Page Generator 2.0](https://302.ai/tools/coder/) from [302.AI](https://302.ai).
+Open-source version of the [AI Web Page Generator 2.0](https://302.ai/en/tools/coder/) from [302.AI](https://302.ai).
 You can directly log in to 302.AI for a zero-code, zero-configuration online experience.
 Alternatively, customize this project to suit your needs, integrate 302.AI's API KEY, and deploy it yourself.
 
